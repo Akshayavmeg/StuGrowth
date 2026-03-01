@@ -17,9 +17,10 @@
     </nav>
 
     <!-- Welcome Banner -->
+    <!-- Text is updated dynamically by loadDashboard() in script.js -->
     <section class="dashboard-welcome">
-        <h1>Welcome to your Dashboard</h1>
-        <p>Track your learning and get personalized recommendations</p>
+        <h1 id="welcome-heading">Welcome to your Dashboard</h1>
+        <p  id="welcome-subtext">Track your learning and get personalized recommendations</p>
     </section>
 
     <!-- Dashboard Cards -->
@@ -52,5 +53,13 @@
     </section>
 
     <script src="../js/script.js"></script>
+
+    <script>
+        // Run loadDashboard() as soon as the page finishes loading
+        window.onload = function() {
+            loadDashboard();
+        };
+    </script>
+
 </body>
 </html>

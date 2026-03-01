@@ -197,3 +197,43 @@ function loadRecommendations() {
         container.innerHTML = container.innerHTML + cardHTML;
     }
 }
+
+
+// ------------------------------------------------
+// loadDashboard()
+// Called when pages/dashboard.html loads.
+//
+// Reads stuName and stuSubject from localStorage
+// (saved by saveProfile in pages/profile.html).
+//
+// If a profile exists  → shows personalised greeting
+// If no profile exists → shows a friendly default message
+// ------------------------------------------------
+
+function loadDashboard() {
+
+    // Read saved profile values from localStorage
+    var name    = localStorage.getItem("stuName");
+    var subject = localStorage.getItem("stuSubject");
+
+    // Get the two elements in the welcome banner
+    var heading = document.getElementById("welcome-heading");
+    var subtext = document.getElementById("welcome-subtext");
+
+    if (name && name !== "") {
+        // Profile found — show personalised message
+        heading.textContent = "Welcome, " + name + "! 👋";
+
+        if (subject && subject !== "") {
+            subtext.textContent = "Your focus subject: " + subject;
+        } else {
+            // Name saved but no subject yet
+            subtext.textContent = "Complete your profile to get personalised recommendations.";
+        }
+
+    } else {
+        // No profile saved at all — show default message
+        heading.textContent = "Welcome to your Dashboard";
+        subtext.textContent = "Track your learning and get personalized recommendations";
+    }
+}
