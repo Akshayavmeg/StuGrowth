@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuGrowth - Progress</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">StuGrowth</div>
+            <button class="btn-logout" onclick="window.location.href='../index.html'">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="dashboard-welcome">
+        <h1>Your Learning Progress</h1>
+        <p>Keep going! Every step counts towards your goal.</p>
+    </section>
+
+    <!-- Progress Cards -->
+    <section class="progress-section">
+
+        <!-- Course 1: Python Basics — 80% -->
+        <div class="progress-card">
+            <div class="progress-top">
+                <div class="progress-course-info">
+                    <span class="progress-icon">🐍</span>
+                    <div>
+                        <h3 class="progress-course-name">Python Basics</h3>
+                        <p class="progress-status">Almost there! Keep it up.</p>
+                    </div>
+                </div>
+                <!-- badge-high = green, badge-mid = orange, badge-low = red/pink -->
+                <span class="progress-badge badge-high">80%</span>
+            </div>
+            <!-- data-width tells JS what percentage to animate the bar to -->
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill bar-high" data-width="80"></div>
+            </div>
+        </div>
+
+        <!-- Course 2: Data Structures — 45% -->
+        <div class="progress-card">
+            <div class="progress-top">
+                <div class="progress-course-info">
+                    <span class="progress-icon">🗂️</span>
+                    <div>
+                        <h3 class="progress-course-name">Data Structures</h3>
+                        <p class="progress-status">Good start! Stay consistent.</p>
+                    </div>
+                </div>
+                <span class="progress-badge badge-low">45%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill bar-low" data-width="45"></div>
+            </div>
+        </div>
+
+        <!-- Course 3: Aptitude Training — 60% -->
+        <div class="progress-card">
+            <div class="progress-top">
+                <div class="progress-course-info">
+                    <span class="progress-icon">🧠</span>
+                    <div>
+                        <h3 class="progress-course-name">Aptitude Training</h3>
+                        <p class="progress-status">More than halfway there!</p>
+                    </div>
+                </div>
+                <span class="progress-badge badge-mid">60%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill bar-mid" data-width="60"></div>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="progress-back-wrapper">
+            <button class="btn-back" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+        </div>
+
+    </section>
+
+    <script src="../js/script.js"></script>
+
+    <script>
+        /*
+         * animateProgressBars()
+         * Every .progress-bar-fill starts at width: 0 (set in CSS).
+         * We read the target % from each bar's data-width attribute,
+         * then apply it so the CSS transition animates it smoothly.
+         * setTimeout of 100ms gives the browser time to first paint
+         * the bars at 0% before the animation kicks in.
+         */
+        window.onload = function() {
+            var bars = document.querySelectorAll(".progress-bar-fill");
+
+            setTimeout(function() {
+                for (var i = 0; i < bars.length; i++) {
+                    var targetWidth = bars[i].getAttribute("data-width");
+                    bars[i].style.width = targetWidth + "%";
+                }
+            }, 100);
+        };
+    </script>
+
+</body>
+</html>
