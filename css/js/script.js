@@ -89,111 +89,324 @@ function saveProfile() {
 // loadRecommendations()
 // Called when pages/recommendations.html loads.
 //
-// Reads "stuSubject" from localStorage (saved by
-// saveProfile), then builds and injects course cards
-// into the #rec-container section on the page.
+// Reads 3 values from localStorage:
+//   stuSubject → Subject Interest  (e.g. "Python", "Data")
+//   stuGoal    → Learning Goal     (e.g. "get a job", "crack JEE")
+//   stuStyle   → Learning Style    (Videos / Reading / Practice / Mixed)
 //
-// Subject matching is case-insensitive so "python",
-// "Python", and "PYTHON" all work correctly.
+// Step 1: Pick a base course list based on subject keyword
+// Step 2: Re-order the list based on learning style preference
+//         Videos   → video courses float to the top
+//         Practice → project/hands-on courses float to the top
+//         Reading  → theory/reading courses float to the top
+//         Mixed    → no reordering, show all as-is
+//
+// Each course object has:
+//   icon  — emoji shown at the top of the card
+//   title — course name
+//   desc  — one-line description
+//   type  — "video" | "practice" | "reading"
+//           used to reorder by learning style
+//   tag   — small label shown on the card  e.g. "📹 Video Course"
 // ------------------------------------------------
 
 function loadRecommendations() {
 
-    // Get the subject the student saved in their profile
-    var subject = localStorage.getItem("stuSubject");
+    // --- Step 1: Read all 3 profile values from localStorage ---
+    var subject = localStorage.getItem("stuSubject") || "";
+    var goal    = localStorage.getItem("stuGoal")    || "";
+    var style   = localStorage.getItem("stuStyle")   || "";
 
-    // Get the container div where we will put the cards
     var container = document.getElementById("rec-container");
     var subtitle  = document.getElementById("rec-subtitle");
 
-    // Define courses for each subject
-    // Each course has a title, description, and an emoji icon
-    var courses = [];
-
-    if (subject === null || subject === "") {
-        // No profile saved yet — ask student to fill profile first
+    // If no profile saved at all, ask student to fill profile first
+    if (subject === "" && goal === "" && style === "") {
         container.innerHTML =
             "<p class='rec-no-profile'>" +
-            "⚠️ No profile found. Please <a href='profile.html'>fill your profile</a> first." +
+            "⚠️ No profile found. Please " +
+            "<a href='profile.html'>fill your profile</a> first." +
             "</p>";
         return;
     }
 
-    // Convert to lowercase so matching works regardless of how user typed it
-    var subjectLower = subject.toLowerCase();
+    // Lowercase for easier keyword matching
+    var subjectLow = subject.toLowerCase();
+    var goalLow    = goal.toLowerCase();
 
-    if (subjectLower.indexOf("python") !== -1) {
+    // courses array — filled based on subject match below
+    var courses = [];
 
-        subtitle.textContent = "Recommended courses for: Python";
+
+    // --- Step 2: Pick base course list by subject keyword ---
+
+    if (subjectLow.indexOf("python") !== -1) {
+
+        subtitle.textContent = "Recommended for: Python  •  Goal: " + (goal || "Not set");
         courses = [
             {
-                icon: "🐍",
+                icon: "🐍", type: "reading",
+                tag: "📖 Beginner",
                 title: "Python Basics",
-                desc: "Learn variables, loops, functions and the fundamentals of Python programming."
+                desc: "Variables, loops, functions and the fundamentals of Python."
             },
             {
-                icon: "⚙️",
+                icon: "▶️", type: "video",
+                tag: "📹 Video Course",
+                title: "Python Crash Course – Video Series",
+                desc: "Watch and code along — covers syntax, lists, dicts and functions."
+            },
+            {
+                icon: "⚙️", type: "reading",
+                tag: "📖 Intermediate",
                 title: "Intermediate Python",
-                desc: "Explore OOP, file handling, modules and writing cleaner Python code."
+                desc: "OOP, file handling, modules and writing cleaner Python code."
             },
             {
-                icon: "🛠️",
-                title: "Python Projects",
-                desc: "Build real projects like a calculator, to-do app and web scraper using Python."
+                icon: "🎬", type: "video",
+                tag: "📹 Video Course",
+                title: "Python OOP – Video Deep Dive",
+                desc: "Step-by-step video lessons on classes, inheritance and design."
+            },
+            {
+                icon: "🛠️", type: "practice",
+                tag: "💻 Hands-On",
+                title: "Python Mini Projects",
+                desc: "Build a calculator, to-do app and number guessing game."
+            },
+            {
+                icon: "🚀", type: "practice",
+                tag: "💻 Capstone Project",
+                title: "Python Web Scraper Project",
+                desc: "Scrape real websites using requests and BeautifulSoup."
             }
         ];
 
-    } else if (subjectLower.indexOf("math") !== -1) {
+    } else if (subjectLow.indexOf("data") !== -1) {
 
-        subtitle.textContent = "Recommended courses for: Mathematics";
+        subtitle.textContent = "Recommended for: Data Structures  •  Goal: " + (goal || "Not set");
         courses = [
             {
-                icon: "➕",
-                title: "Algebra Foundation",
-                desc: "Master equations, inequalities, polynomials and algebraic thinking."
+                icon: "🗂️", type: "reading",
+                tag: "📖 Theory",
+                title: "Arrays & Linked Lists",
+                desc: "Understand memory, indexing and pointer-based data structures."
             },
             {
-                icon: "🧩",
-                title: "Problem Solving Math",
-                desc: "Sharpen your logical thinking with structured math problem-solving techniques."
+                icon: "▶️", type: "video",
+                tag: "📹 Video Course",
+                title: "DSA Visualised – Video Series",
+                desc: "Watch algorithms run step-by-step with clear animations."
+            },
+            {
+                icon: "🌲", type: "reading",
+                tag: "📖 Intermediate",
+                title: "Trees & Graphs",
+                desc: "BFS, DFS, binary search trees and graph traversal explained."
+            },
+            {
+                icon: "⚡", type: "practice",
+                tag: "💻 Hands-On",
+                title: "DSA Coding Practice",
+                desc: "Solve 30 curated problems on arrays, stacks, queues and trees."
+            },
+            {
+                icon: "🏆", type: "practice",
+                tag: "💻 Competitive Prep",
+                title: "Algorithm Challenges",
+                desc: "Time and space complexity problems for placement preparation."
+            }
+        ];
+
+    } else if (subjectLow.indexOf("web") !== -1 || subjectLow.indexOf("html") !== -1) {
+
+        subtitle.textContent = "Recommended for: Web Development  •  Goal: " + (goal || "Not set");
+        courses = [
+            {
+                icon: "🌐", type: "reading",
+                tag: "📖 Beginner",
+                title: "HTML & CSS Fundamentals",
+                desc: "Build your first webpage — structure, styling and layouts."
+            },
+            {
+                icon: "▶️", type: "video",
+                tag: "📹 Video Course",
+                title: "Web Dev Bootcamp – Video Series",
+                desc: "Full video course covering HTML, CSS and JavaScript basics."
+            },
+            {
+                icon: "✨", type: "reading",
+                tag: "📖 Intermediate",
+                title: "JavaScript for Web",
+                desc: "DOM manipulation, events and making pages interactive."
+            },
+            {
+                icon: "🛠️", type: "practice",
+                tag: "💻 Hands-On",
+                title: "Build 3 Web Projects",
+                desc: "Portfolio site, to-do list app and a weather card UI."
+            },
+            {
+                icon: "🎬", type: "video",
+                tag: "📹 Video Course",
+                title: "Responsive Design – Video Guide",
+                desc: "Watch how to make websites look great on all screen sizes."
+            }
+        ];
+
+    } else if (subjectLow.indexOf("math") !== -1 || goalLow.indexOf("jee") !== -1) {
+
+        subtitle.textContent = "Recommended for: Mathematics  •  Goal: " + (goal || "Not set");
+        courses = [
+            {
+                icon: "➕", type: "reading",
+                tag: "📖 Foundation",
+                title: "Algebra & Equations",
+                desc: "Master equations, inequalities and algebraic expressions."
+            },
+            {
+                icon: "▶️", type: "video",
+                tag: "📹 Video Course",
+                title: "Maths Problem Solving – Video Series",
+                desc: "Watch worked examples for JEE-level algebra and calculus."
+            },
+            {
+                icon: "📐", type: "reading",
+                tag: "📖 Intermediate",
+                title: "Trigonometry & Geometry",
+                desc: "Angles, identities, coordinate geometry and proofs."
+            },
+            {
+                icon: "🧩", type: "practice",
+                tag: "💻 Practice Set",
+                title: "100 Maths Problems",
+                desc: "Timed practice across algebra, calculus and statistics topics."
+            },
+            {
+                icon: "🏅", type: "practice",
+                tag: "💻 Mock Test",
+                title: "JEE / Aptitude Mock Test",
+                desc: "Full-length practice test simulating exam conditions."
             }
         ];
 
     } else {
-        // Default recommendations for any other subject
-        subtitle.textContent = "Recommended courses for: " + subject;
+
+        // Default — no subject keyword matched
+        subtitle.textContent = "General Recommendations  •  Goal: " + (goal || "Not set");
         courses = [
             {
-                icon: "📚",
-                title: "General Study Skills",
-                desc: "Learn how to study effectively, manage your time and retain information better."
+                icon: "📚", type: "reading",
+                tag: "📖 Essentials",
+                title: "How to Study Effectively",
+                desc: "Build consistent study habits and improve information retention."
             },
             {
-                icon: "🧠",
-                title: "Learning Techniques",
-                desc: "Discover proven techniques like spaced repetition, mind mapping and active recall."
+                icon: "▶️", type: "video",
+                tag: "📹 Video Course",
+                title: "Learning How to Learn – Video",
+                desc: "Science-backed video lessons on memory, focus and motivation."
+            },
+            {
+                icon: "🧠", type: "reading",
+                tag: "📖 Technique",
+                title: "Spaced Repetition & Active Recall",
+                desc: "The two most powerful techniques for long-term memory."
+            },
+            {
+                icon: "🗓️", type: "practice",
+                tag: "💻 Practice",
+                title: "Build Your Study Plan",
+                desc: "Create a weekly schedule that balances subjects and breaks."
             }
         ];
     }
 
-    // Clear any existing content in the container
+
+    // --- Step 3: Reorder courses based on Learning Style ---
+    //
+    // We separate courses into two groups:
+    //   "preferred" — matches the selected style
+    //   "others"    — everything else
+    // Then we concatenate: preferred first, others after.
+    // This simulates an AI ranking/personalisation step.
+
+    var preferred = [];   // courses matching the style
+    var others    = [];   // remaining courses
+
+    if (style === "Videos") {
+        for (var i = 0; i < courses.length; i++) {
+            if (courses[i].type === "video") {
+                preferred.push(courses[i]);
+            } else {
+                others.push(courses[i]);
+            }
+        }
+
+    } else if (style === "Practice") {
+        for (var i = 0; i < courses.length; i++) {
+            if (courses[i].type === "practice") {
+                preferred.push(courses[i]);
+            } else {
+                others.push(courses[i]);
+            }
+        }
+
+    } else if (style === "Reading") {
+        for (var i = 0; i < courses.length; i++) {
+            if (courses[i].type === "reading") {
+                preferred.push(courses[i]);
+            } else {
+                others.push(courses[i]);
+            }
+        }
+
+    } else {
+        // Mixed or not set — no reordering, show all in original order
+        preferred = courses;
+    }
+
+    // Merge: preferred courses come first, then the rest
+    var finalCourses = preferred.concat(others);
+
+    // Show the active learning style as a badge under the subtitle
+    var styleTagEl = document.getElementById("rec-style-tag");
+    if (styleTagEl) {
+        if (style !== "") {
+            styleTagEl.textContent = "🎯 Learning Style: " + style + "  •  Courses sorted for you";
+            styleTagEl.style.fontSize   = "13px";
+            styleTagEl.style.color      = "#c8dff8";
+            styleTagEl.style.marginTop  = "4px";
+        } else {
+            styleTagEl.textContent = "";
+        }
+    }
+
+
+    // --- Step 4: Build and inject the cards into the page ---
+
     container.innerHTML = "";
 
-    // Loop through the courses array and create a card for each one
-    for (var i = 0; i < courses.length; i++) {
+    for (var j = 0; j < finalCourses.length; j++) {
 
-        var course = courses[i];
+        var course = finalCourses[j];
 
-        // Build the card HTML as a string
+        // First card gets a "⭐ Top Pick" ribbon if a style was chosen
+        var ribbon = "";
+        if (j === 0 && style !== "" && style !== "Mixed") {
+            ribbon = "<div class='rec-ribbon'>⭐ Top Pick for " + style + "</div>";
+        }
+
         var cardHTML =
-            "<div class='card'>" +
+            "<div class='card rec-card'>" +
+                ribbon +
                 "<div class='card-icon'>" + course.icon + "</div>" +
+                "<span class='rec-tag'>" + course.tag + "</span>" +
                 "<h3 class='card-title'>" + course.title + "</h3>" +
                 "<p class='card-text'>" + course.desc + "</p>" +
                 "<button class='btn-primary btn-card'>Start Course</button>" +
             "</div>";
 
-        // Add the card to the container
         container.innerHTML = container.innerHTML + cardHTML;
     }
 }

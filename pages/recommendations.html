@@ -19,31 +19,193 @@
     <!-- Page Header -->
     <section class="dashboard-welcome">
         <h1>Your Personalized Recommendations</h1>
-        <p id="rec-subtitle">Based on your subject interest</p>
+        <p id="rec-subtitle">Based on your subject, goal and learning style</p>
+        <p id="rec-style-tag"></p>
     </section>
 
-    <!-- Recommendations Cards Container -->
-    <!-- JS will inject course cards into this section -->
+    <!--
+        rec-container: this div is empty on page load.
+        The script below fills it with course cards
+        based on what the student saved in their profile.
+    -->
     <section class="dashboard-cards" id="rec-container">
-        <!-- Cards are loaded dynamically by loadRecommendations() in script.js -->
     </section>
 
-    <!-- Back button at the bottom -->
+    <!-- Back Button -->
     <div class="rec-back-wrapper">
-        <button class="btn-back rec-back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+        <button class="btn-back rec-back-btn" onclick="window.location.href='dashboard.html'">
+            ← Back to Dashboard
+        </button>
     </div>
 
+    <!--
+        script.js is loaded first so all other functions
+        (handleLogin, saveProfile, etc.) are available too.
+    -->
     <script src="../js/script.js"></script>
 
     <!--
-        window.onload waits for the full page + script.js to finish loading
-        before calling loadRecommendations(). This guarantees the function
-        exists and #rec-container is in the DOM when the call happens.
+        loadRecommendations() is also defined inline here
+        as a safety net — this guarantees it runs even if
+        script.js has a path problem on the student's machine.
+
+        window.onload ensures the DOM (especially #rec-container)
+        is fully ready before the function tries to find it.
     -->
     <script>
+
+        function loadRecommendations() {
+
+            // Read all 3 profile values from localStorage
+            var subject = localStorage.getItem("stuSubject") || "";
+            var goal    = localStorage.getItem("stuGoal")    || "";
+            var style   = localStorage.getItem("stuStyle")   || "";
+
+            var container = document.getElementById("rec-container");
+            var subtitle  = document.getElementById("rec-subtitle");
+            var styleTag  = document.getElementById("rec-style-tag");
+
+            // If no profile saved at all, show a prompt to fill the profile
+            if (subject === "" && goal === "" && style === "") {
+                container.innerHTML =
+                    "<p class='rec-no-profile'>" +
+                    "⚠️ No profile found. Please " +
+                    "<a href='profile.html'>fill your profile</a> first." +
+                    "</p>";
+                return;
+            }
+
+            // Lowercase copies for keyword matching
+            var subjectLow = subject.toLowerCase();
+            var goalLow    = goal.toLowerCase();
+
+            var courses = [];
+
+            // ---- Step 1: Pick course list based on subject ----
+
+            if (subjectLow.indexOf("python") !== -1) {
+
+                subtitle.textContent = "Recommended for: Python  •  Goal: " + (goal || "Not set");
+                courses = [
+                    { icon: "🐍", type: "reading",  tag: "📖 Beginner",        title: "Python Basics",                   desc: "Variables, loops, functions and the fundamentals of Python." },
+                    { icon: "▶️", type: "video",    tag: "📹 Video Course",     title: "Python Crash Course – Video",     desc: "Watch and code along — covers syntax, lists, dicts and functions." },
+                    { icon: "⚙️", type: "reading",  tag: "📖 Intermediate",     title: "Intermediate Python",             desc: "OOP, file handling, modules and writing cleaner Python code." },
+                    { icon: "🎬", type: "video",    tag: "📹 Video Course",     title: "Python OOP – Video Deep Dive",    desc: "Step-by-step video lessons on classes, inheritance and design." },
+                    { icon: "🛠️", type: "practice", tag: "💻 Hands-On",         title: "Python Mini Projects",            desc: "Build a calculator, to-do app and a number guessing game." },
+                    { icon: "🚀", type: "practice", tag: "💻 Capstone Project", title: "Python Web Scraper Project",      desc: "Scrape real websites using requests and BeautifulSoup." }
+                ];
+
+            } else if (subjectLow.indexOf("data") !== -1) {
+
+                subtitle.textContent = "Recommended for: Data Structures  •  Goal: " + (goal || "Not set");
+                courses = [
+                    { icon: "🗂️", type: "reading",  tag: "📖 Theory",           title: "Arrays & Linked Lists",           desc: "Understand memory, indexing and pointer-based data structures." },
+                    { icon: "▶️", type: "video",    tag: "📹 Video Course",     title: "DSA Visualised – Video Series",   desc: "Watch algorithms run step-by-step with clear animations." },
+                    { icon: "🌲", type: "reading",  tag: "📖 Intermediate",     title: "Trees & Graphs",                  desc: "BFS, DFS, binary search trees and graph traversal explained." },
+                    { icon: "⚡", type: "practice", tag: "💻 Hands-On",         title: "DSA Coding Practice",             desc: "Solve 30 curated problems on arrays, stacks, queues and trees." },
+                    { icon: "🏆", type: "practice", tag: "💻 Competitive Prep", title: "Algorithm Challenges",            desc: "Time and space complexity problems for placement preparation." }
+                ];
+
+            } else if (subjectLow.indexOf("web") !== -1 || subjectLow.indexOf("html") !== -1) {
+
+                subtitle.textContent = "Recommended for: Web Development  •  Goal: " + (goal || "Not set");
+                courses = [
+                    { icon: "🌐", type: "reading",  tag: "📖 Beginner",         title: "HTML & CSS Fundamentals",         desc: "Build your first webpage — structure, styling and layouts." },
+                    { icon: "▶️", type: "video",    tag: "📹 Video Course",     title: "Web Dev Bootcamp – Video",        desc: "Full video course covering HTML, CSS and JavaScript basics." },
+                    { icon: "✨", type: "reading",  tag: "📖 Intermediate",     title: "JavaScript for Web",              desc: "DOM manipulation, events and making pages interactive." },
+                    { icon: "🛠️", type: "practice", tag: "💻 Hands-On",         title: "Build 3 Web Projects",            desc: "Portfolio site, to-do list app and a weather card UI." },
+                    { icon: "🎬", type: "video",    tag: "📹 Video Course",     title: "Responsive Design – Video Guide", desc: "Watch how to make websites look great on all screen sizes." }
+                ];
+
+            } else if (subjectLow.indexOf("math") !== -1 || goalLow.indexOf("jee") !== -1) {
+
+                subtitle.textContent = "Recommended for: Mathematics  •  Goal: " + (goal || "Not set");
+                courses = [
+                    { icon: "➕", type: "reading",  tag: "📖 Foundation",       title: "Algebra & Equations",             desc: "Master equations, inequalities and algebraic expressions." },
+                    { icon: "▶️", type: "video",    tag: "📹 Video Course",     title: "Maths Problem Solving – Video",   desc: "Watch worked examples for JEE-level algebra and calculus." },
+                    { icon: "📐", type: "reading",  tag: "📖 Intermediate",     title: "Trigonometry & Geometry",         desc: "Angles, identities, coordinate geometry and proofs." },
+                    { icon: "🧩", type: "practice", tag: "💻 Practice Set",     title: "100 Maths Problems",              desc: "Timed practice across algebra, calculus and statistics topics." },
+                    { icon: "🏅", type: "practice", tag: "💻 Mock Test",        title: "JEE / Aptitude Mock Test",        desc: "Full-length practice test simulating exam conditions." }
+                ];
+
+            } else {
+
+                subtitle.textContent = "General Recommendations  •  Goal: " + (goal || "Not set");
+                courses = [
+                    { icon: "📚", type: "reading",  tag: "📖 Essentials",       title: "How to Study Effectively",        desc: "Build consistent study habits and improve retention." },
+                    { icon: "▶️", type: "video",    tag: "📹 Video Course",     title: "Learning How to Learn – Video",   desc: "Science-backed video lessons on memory, focus and motivation." },
+                    { icon: "🧠", type: "reading",  tag: "📖 Technique",        title: "Spaced Repetition & Active Recall", desc: "The two most powerful techniques for long-term memory." },
+                    { icon: "🗓️", type: "practice", tag: "💻 Practice",         title: "Build Your Study Plan",           desc: "Create a weekly schedule that balances subjects and breaks." }
+                ];
+            }
+
+            // ---- Step 2: Reorder by Learning Style ----
+            // Courses matching the chosen style float to the top.
+
+            var preferred = [];
+            var others    = [];
+
+            if (style === "Videos") {
+                for (var i = 0; i < courses.length; i++) {
+                    if (courses[i].type === "video")    { preferred.push(courses[i]); }
+                    else                                { others.push(courses[i]); }
+                }
+            } else if (style === "Practice") {
+                for (var i = 0; i < courses.length; i++) {
+                    if (courses[i].type === "practice") { preferred.push(courses[i]); }
+                    else                                { others.push(courses[i]); }
+                }
+            } else if (style === "Reading") {
+                for (var i = 0; i < courses.length; i++) {
+                    if (courses[i].type === "reading")  { preferred.push(courses[i]); }
+                    else                                { others.push(courses[i]); }
+                }
+            } else {
+                // Mixed or empty — keep original order
+                preferred = courses;
+            }
+
+            var finalCourses = preferred.concat(others);
+
+            // Show learning style badge in the header
+            if (style !== "") {
+                styleTag.textContent = "🎯 Learning Style: " + style + "  •  Courses sorted for you";
+                styleTag.style.fontSize  = "13px";
+                styleTag.style.color     = "#c8dff8";
+                styleTag.style.marginTop = "4px";
+            }
+
+            // ---- Step 3: Build and inject cards ----
+
+            container.innerHTML = "";
+
+            for (var j = 0; j < finalCourses.length; j++) {
+
+                var course = finalCourses[j];
+
+                // First card gets a Top Pick ribbon when a specific style is chosen
+                var ribbon = "";
+                if (j === 0 && style !== "" && style !== "Mixed") {
+                    ribbon = "<div class='rec-ribbon'>⭐ Top Pick for " + style + "</div>";
+                }
+
+                container.innerHTML +=
+                    "<div class='card rec-card'>" +
+                        ribbon +
+                        "<div class='card-icon'>" + course.icon + "</div>" +
+                        "<span class='rec-tag'>" + course.tag + "</span>" +
+                        "<h3 class='card-title'>" + course.title + "</h3>" +
+                        "<p class='card-text'>" + course.desc + "</p>" +
+                        "<button class='btn-primary btn-card'>Start Course</button>" +
+                    "</div>";
+            }
+        }
+
+        // Wait for full page load before running
         window.onload = function() {
             loadRecommendations();
         };
+
     </script>
 
 </body>
