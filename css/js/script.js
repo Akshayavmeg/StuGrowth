@@ -1,22 +1,21 @@
 // ================================
 //  StuGrowth - Main JavaScript File
 //  Author: Student Project
-//  Description: Handles interactivity
+//  Description: Handles all interactivity
 //               for the StuGrowth platform
 // ================================
 
 
-// -------------------------------------------------
+// ------------------------------------------------
 // handleLogin()
-// Called when the Login button is clicked in
-// pages/login.html
+// Called by the Login button in pages/login.html
 //
 // PATH NOTE:
-// login.html is in:      StuGrowth/pages/login.html
-// dashboard.html is in:  StuGrowth/pages/dashboard.html
-// Both are in the SAME folder, so the redirect path
-// is just "dashboard.html" (no folder prefix needed)
-// -------------------------------------------------
+//   login.html    →  StuGrowth/pages/login.html
+//   dashboard.html → StuGrowth/pages/dashboard.html
+//   Both files are in the SAME pages/ folder,
+//   so the redirect path is just "dashboard.html"
+// ------------------------------------------------
 
 function handleLogin() {
 
@@ -33,19 +32,25 @@ function handleLogin() {
     // Hide error message (in case it was shown before)
     errorMsg.style.display = "none";
 
-    // Redirect to dashboard — same folder, just filename
+    // Both files are in pages/ so just use the filename
     window.location.href = "dashboard.html";
 }
 
 
-// -------------------------------------------------
+// ------------------------------------------------
 // saveProfile()
-// Called when the Save Profile button is clicked in
-// pages/profile.html
+// Called by the Save Profile button in pages/profile.html
 //
-// Reads all form values, checks they are not empty,
-// saves them to localStorage, then shows a success alert.
-// -------------------------------------------------
+// Reads all 5 form fields, validates them,
+// saves to localStorage, then shows a success alert.
+//
+// Saved keys:
+//   stuName    → Full Name
+//   stuClass   → Class / Year
+//   stuSubject → Subject Interest
+//   stuGoal    → Learning Goal
+//   stuStyle   → Preferred Learning Style
+// ------------------------------------------------
 
 function saveProfile() {
 
@@ -58,7 +63,7 @@ function saveProfile() {
 
     var errorMsg = document.getElementById("profile-error");
 
-    // Check if any field is empty
+    // Check if any field is empty or not selected
     if (fullName === "" || classYear === "" || subjectInterest === "" ||
         learningGoal === "" || learningStyle === "") {
         errorMsg.style.display = "block";
@@ -75,6 +80,120 @@ function saveProfile() {
     localStorage.setItem("stuGoal",    learningGoal);
     localStorage.setItem("stuStyle",   learningStyle);
 
-    // Tell the student it worked
+    // Show success message
     alert("Profile saved successfully!");
+}
+
+
+// ------------------------------------------------
+// loadRecommendations()
+// Called when pages/recommendations.html loads.
+//
+// Reads "stuSubject" from localStorage (saved by
+// saveProfile), then builds and injects course cards
+// into the #rec-container section on the page.
+//
+// Subject matching is case-insensitive so "python",
+// "Python", and "PYTHON" all work correctly.
+// ------------------------------------------------
+
+function loadRecommendations() {
+
+    // Get the subject the student saved in their profile
+    var subject = localStorage.getItem("stuSubject");
+
+    // Get the container div where we will put the cards
+    var container = document.getElementById("rec-container");
+    var subtitle  = document.getElementById("rec-subtitle");
+
+    // Define courses for each subject
+    // Each course has a title, description, and an emoji icon
+    var courses = [];
+
+    if (subject === null || subject === "") {
+        // No profile saved yet — ask student to fill profile first
+        container.innerHTML =
+            "<p class='rec-no-profile'>" +
+            "⚠️ No profile found. Please <a href='profile.html'>fill your profile</a> first." +
+            "</p>";
+        return;
+    }
+
+    // Convert to lowercase so matching works regardless of how user typed it
+    var subjectLower = subject.toLowerCase();
+
+    if (subjectLower.indexOf("python") !== -1) {
+
+        subtitle.textContent = "Recommended courses for: Python";
+        courses = [
+            {
+                icon: "🐍",
+                title: "Python Basics",
+                desc: "Learn variables, loops, functions and the fundamentals of Python programming."
+            },
+            {
+                icon: "⚙️",
+                title: "Intermediate Python",
+                desc: "Explore OOP, file handling, modules and writing cleaner Python code."
+            },
+            {
+                icon: "🛠️",
+                title: "Python Projects",
+                desc: "Build real projects like a calculator, to-do app and web scraper using Python."
+            }
+        ];
+
+    } else if (subjectLower.indexOf("math") !== -1) {
+
+        subtitle.textContent = "Recommended courses for: Mathematics";
+        courses = [
+            {
+                icon: "➕",
+                title: "Algebra Foundation",
+                desc: "Master equations, inequalities, polynomials and algebraic thinking."
+            },
+            {
+                icon: "🧩",
+                title: "Problem Solving Math",
+                desc: "Sharpen your logical thinking with structured math problem-solving techniques."
+            }
+        ];
+
+    } else {
+        // Default recommendations for any other subject
+        subtitle.textContent = "Recommended courses for: " + subject;
+        courses = [
+            {
+                icon: "📚",
+                title: "General Study Skills",
+                desc: "Learn how to study effectively, manage your time and retain information better."
+            },
+            {
+                icon: "🧠",
+                title: "Learning Techniques",
+                desc: "Discover proven techniques like spaced repetition, mind mapping and active recall."
+            }
+        ];
+    }
+
+    // Clear any existing content in the container
+    container.innerHTML = "";
+
+    // Loop through the courses array and create a card for each one
+    for (var i = 0; i < courses.length; i++) {
+
+        var course = courses[i];
+
+        // Build the card HTML as a string
+        var cardHTML =
+            "<div class='card'>" +
+                "<div class='card-icon'>" + course.icon + "</div>" +
+                "<h3 class='card-title'>" + course.title + "</h3>" +
+                "<p class='card-text'>" + course.desc + "</p>" +
+                "<button class='btn-primary btn-card'>Start Course</button>" +
+            "</div>";
+
+        // Add the card to the container
+        container.innerHTML = container.innerHTML + cardHTML;
+    }
 }

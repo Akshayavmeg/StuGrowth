@@ -367,3 +367,40 @@ body {
         max-width: 360px;
     }
 }
+
+/* ================================
+   RECOMMENDATIONS PAGE
+================================ */
+
+/* Back button wrapper — centers the button below the cards */
+.rec-back-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 8px 24px 48px;
+    background-color: #f0f4ff;
+}
+
+/* Give the back button a fixed width so it doesn't stretch full page */
+.rec-back-btn {
+    width: auto;
+    padding: 11px 36px;
+}
+
+/* Message shown when no profile is found in localStorage */
+.rec-no-profile {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    padding: 40px 24px;
+    width: 100%;
+}
+
+.rec-no-profile a {
+    color: #1a73e8;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.rec-no-profile a:hover {
+    text-decoration: underline;
+}

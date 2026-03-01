@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuGrowth - Recommendations</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">StuGrowth</div>
+            <button class="btn-logout" onclick="window.location.href='../index.html'">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="dashboard-welcome">
+        <h1>Your Personalized Recommendations</h1>
+        <p id="rec-subtitle">Based on your subject interest</p>
+    </section>
+
+    <!-- Recommendations Cards Container -->
+    <!-- JS will inject course cards into this section -->
+    <section class="dashboard-cards" id="rec-container">
+        <!-- Cards are loaded dynamically by loadRecommendations() in script.js -->
+    </section>
+
+    <!-- Back button at the bottom -->
+    <div class="rec-back-wrapper">
+        <button class="btn-back rec-back-btn" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+    </div>
+
+    <script src="../js/script.js"></script>
+
+    <!-- Call the function once the page has loaded -->
+    <script>
+        loadRecommendations();
+    </script>
+
+</body>
+</html>
