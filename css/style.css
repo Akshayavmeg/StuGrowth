@@ -224,3 +224,107 @@ body {
         font-size: 15px;
     }
 }
+/* ================================
+   NEW CSS — Append this to the bottom
+   of your existing css/style.css
+================================ */
+
+/* --- Logout Button (Navbar) --- */
+.btn-logout {
+    background-color: #ffffff;
+    color: #1a73e8;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #d6eaff;
+}
+
+/* --- Dashboard Welcome Section --- */
+.dashboard-welcome {
+    background-color: #1a73e8;
+    color: #ffffff;
+    text-align: center;
+    padding: 48px 24px 40px;
+}
+
+.dashboard-welcome h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.dashboard-welcome p {
+    font-size: 16px;
+    color: #c8dff8;
+}
+
+/* --- Dashboard Cards Section --- */
+.dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    padding: 48px 24px;
+    background-color: #f0f4ff;
+    min-height: calc(100vh - 56px - 148px);
+}
+
+/* --- Individual Card --- */
+.card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 32px 28px;
+    width: 280px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(26, 115, 232, 0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(26, 115, 232, 0.2);
+}
+
+.card-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a73e8;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+/* Card button — slightly smaller than hero button */
+.btn-card {
+    padding: 10px 24px;
+    font-size: 14px;
+}
+
+/* --- Responsive: Stack cards on small screens --- */
+@media (max-width: 768px) {
+    .dashboard-welcome h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 360px;
+    }
+}

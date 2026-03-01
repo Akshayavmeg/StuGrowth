@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuGrowth - Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">StuGrowth</div>
+            <button class="btn-logout" onclick="window.location.href='../index.html'">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Welcome Section -->
+    <section class="dashboard-welcome">
+        <h1>Welcome to your Dashboard</h1>
+        <p>Track your learning and get personalized recommendations</p>
+    </section>
+
+    <!-- Dashboard Cards -->
+    <section class="dashboard-cards">
+
+        <!-- Card 1: Profile -->
+        <div class="card">
+            <div class="card-icon">👤</div>
+            <h3 class="card-title">Profile</h3>
+            <p class="card-text">View and update your learning profile</p>
+            <button class="btn-primary btn-card">Open Profile</button>
+        </div>
+
+        <!-- Card 2: Recommendations -->
+        <div class="card">
+            <div class="card-icon">💡</div>
+            <h3 class="card-title">Recommendations</h3>
+            <p class="card-text">See courses recommended for you</p>
+            <button class="btn-primary btn-card">View Recommendations</button>
+        </div>
+
+        <!-- Card 3: Progress -->
+        <div class="card">
+            <div class="card-icon">📈</div>
+            <h3 class="card-title">Progress</h3>
+            <p class="card-text">Check your learning progress</p>
+            <button class="btn-primary btn-card">View Progress</button>
+        </div>
+
+    </section>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
