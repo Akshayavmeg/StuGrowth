@@ -35,9 +35,15 @@
 
     <script src="../js/script.js"></script>
 
-    <!-- Call the function once the page has loaded -->
+    <!--
+        window.onload waits for the full page + script.js to finish loading
+        before calling loadRecommendations(). This guarantees the function
+        exists and #rec-container is in the DOM when the call happens.
+    -->
     <script>
-        loadRecommendations();
+        window.onload = function() {
+            loadRecommendations();
+        };
     </script>
 
 </body>
