@@ -14,7 +14,7 @@
             <div class="logo">StuGrowth</div>
             <div class="nav-btn-group">
                 <button class="btn-nav-outline" onclick="window.location.href='dashboard.html'">← Dashboard</button>
-                <button class="btn-logout"       onclick="window.location.href='../index.html'">Logout</button>
+                <button class="btn-logout"      onclick="window.location.href='../index.html'">Logout</button>
             </div>
         </div>
     </nav>
@@ -28,29 +28,171 @@
     <!-- Admin Content -->
     <section class="admin-section">
 
-        <!-- Profile Data Card — filled by loadAdmin() in script.js -->
+        <!--
+            admin-card is empty on load.
+            loadAdmin() below fills it with profile rows
+            or a "no profile found" message.
+        -->
         <div class="admin-card" id="admin-card">
-
-            <!-- Content is injected by JavaScript below -->
-            <!-- Shows profile rows if data exists,
-                 or a "no profile" message if nothing is saved -->
-
         </div>
 
         <!-- Back button -->
         <div class="admin-back-wrapper">
-            <button class="btn-back" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+            <button class="btn-back" onclick="window.location.href='dashboard.html'">
+                ← Back to Dashboard
+            </button>
         </div>
 
     </section>
 
+    <!--
+        script.js loaded first for all shared functions.
+    -->
     <script src="../js/script.js"></script>
 
+    <!--
+        loadAdmin() is defined inline here as a safety net —
+        this page will always work even if script.js fails to
+        load on the student's local machine.
+
+        window.onload waits for the full page to be ready
+        before trying to find #admin-card in the DOM.
+    -->
     <script>
-        // Run loadAdmin() once the page and script.js are fully loaded
+
+        // -----------------------------------------------
+        // loadAdmin()
+        // Runs automatically when the page finishes loading.
+        //
+        // Reads all 5 profile keys from localStorage:
+        //   stuName    → Full Name
+        //   stuClass   → Class / Year
+        //   stuSubject → Subject Interest
+        //   stuGoal    → Learning Goal
+        //   stuStyle   → Preferred Learning Style
+        //
+        // If stuName exists  → renders a full profile card
+        // If stuName is empty → shows "No student profile found"
+        // -----------------------------------------------
+        function loadAdmin() {
+
+            // Read every profile field from localStorage
+            var name    = localStorage.getItem("stuName");
+            var cls     = localStorage.getItem("stuClass");
+            var subject = localStorage.getItem("stuSubject");
+            var goal    = localStorage.getItem("stuGoal");
+            var style   = localStorage.getItem("stuStyle");
+
+            var card = document.getElementById("admin-card");
+
+            // If name is empty/null, no profile has been saved yet
+            if (!name || name === "") {
+                card.innerHTML =
+                    "<div class='admin-no-data-wrapper'>" +
+                        "<p class='admin-no-data'>" +
+                            "⚠️ No student profile found.<br>" +
+                            "Ask the student to " +
+                            "<a href='profile.html'>fill their profile</a> first." +
+                        "</p>" +
+                    "</div>";
+                return;
+            }
+
+            // Profile exists — build the card content
+            // Header: avatar + student name + label
+            // Divider line
+            // Five data rows: label on left, value on right
+            // Footer: clear button
+
+            card.innerHTML =
+
+                // --- Card header ---
+                "<div class='admin-card-header'>" +
+                    "<span class='admin-avatar'>👤</span>" +
+                    "<div>" +
+                        "<h3 class='admin-student-name'>" + name + "</h3>" +
+                        "<p class='admin-student-label'>Student Profile</p>" +
+                    "</div>" +
+                "</div>" +
+
+                "<div class='admin-divider'></div>" +
+
+                // --- Row 1: Full Name ---
+                "<div class='admin-row'>" +
+                    "<span class='admin-label'>Full Name</span>" +
+                    "<span class='admin-value'>" + name + "</span>" +
+                "</div>" +
+
+                // --- Row 2: Class / Year ---
+                "<div class='admin-row'>" +
+                    "<span class='admin-label'>Class / Year</span>" +
+                    "<span class='admin-value'>" + (cls     || "Not set") + "</span>" +
+                "</div>" +
+
+                // --- Row 3: Subject Interest ---
+                "<div class='admin-row'>" +
+                    "<span class='admin-label'>Subject Interest</span>" +
+                    "<span class='admin-value'>" + (subject || "Not set") + "</span>" +
+                "</div>" +
+
+                // --- Row 4: Learning Goal ---
+                "<div class='admin-row'>" +
+                    "<span class='admin-label'>Learning Goal</span>" +
+                    "<span class='admin-value'>" + (goal    || "Not set") + "</span>" +
+                "</div>" +
+
+                // --- Row 5: Learning Style ---
+                "<div class='admin-row'>" +
+                    "<span class='admin-label'>Learning Style</span>" +
+                    "<span class='admin-value'>" + (style   || "Not set") + "</span>" +
+                "</div>" +
+
+                // --- Card footer: clear profile button ---
+                "<div class='admin-divider'></div>" +
+                "<div class='admin-footer'>" +
+                    "<button class='admin-clear-btn' onclick='clearProfile()'>" +
+                        "🗑️ Clear Profile Data" +
+                    "</button>" +
+                "</div>";
+        }
+
+
+        // -----------------------------------------------
+        // clearProfile()
+        // Called by the Clear Profile button.
+        // Removes all 5 profile keys from localStorage
+        // and re-renders the card to show "no data" state.
+        // -----------------------------------------------
+        function clearProfile() {
+
+            var confirmed = confirm(
+                "Are you sure you want to clear all profile data?\n" +
+                "This cannot be undone."
+            );
+
+            if (!confirmed) {
+                return; // student cancelled — do nothing
+            }
+
+            // Remove every profile key from localStorage
+            localStorage.removeItem("stuName");
+            localStorage.removeItem("stuClass");
+            localStorage.removeItem("stuSubject");
+            localStorage.removeItem("stuGoal");
+            localStorage.removeItem("stuStyle");
+
+            // Re-run loadAdmin so the card updates immediately
+            loadAdmin();
+
+            alert("Profile data cleared.");
+        }
+
+
+        // Run loadAdmin once the full page is ready
         window.onload = function() {
             loadAdmin();
         };
+
     </script>
 
 </body>

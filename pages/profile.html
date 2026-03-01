@@ -48,13 +48,15 @@
             <!-- Subject Interest -->
             <div class="form-group">
                 <label for="subjectInterest">Subject Interest</label>
-                <input type="text" id="subjectInterest" placeholder="e.g. Mathematics, Programming, Physics">
+                <input type="text" id="subjectInterest"
+                       placeholder="e.g. Python, Mathematics, Web Development">
             </div>
 
             <!-- Learning Goal -->
             <div class="form-group">
                 <label for="learningGoal">Learning Goal</label>
-                <input type="text" id="learningGoal" placeholder="e.g. Crack JEE, Learn Web Development">
+                <input type="text" id="learningGoal"
+                       placeholder="e.g. Crack JEE, Learn Web Development, Get a Job">
             </div>
 
             <!-- Preferred Learning Style -->
@@ -69,16 +71,125 @@
                 </select>
             </div>
 
-            <!-- Error message (hidden by default) -->
-            <p id="profile-error" class="error-msg">Please fill in all fields before saving.</p>
+            <!-- Error message — shown if any field is left empty -->
+            <p id="profile-error" class="error-msg">
+                Please fill in all fields before saving.
+            </p>
 
             <!-- Buttons -->
-            <button class="btn-primary btn-full" onclick="saveProfile()">Save Profile</button>
-            <button class="btn-back" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+            <button class="btn-primary btn-full" onclick="saveProfile()">
+                Save Profile
+            </button>
+            <button class="btn-back" onclick="window.location.href='dashboard.html'">
+                ← Back to Dashboard
+            </button>
 
         </div>
     </section>
 
+    <!--
+        script.js is loaded first for all other shared functions.
+    -->
     <script src="../js/script.js"></script>
+
+    <!--
+        saveProfile() and loadSavedProfile() are defined inline here
+        as a safety net so this page always works, even if script.js
+        has a path issue on the student's local machine.
+
+        Two functions:
+          saveProfile()      — reads form, validates, saves to localStorage
+          loadSavedProfile() — pre-fills form with previously saved data
+    -->
+    <script>
+
+        // -----------------------------------------------
+        // saveProfile()
+        // Called by the Save Profile button (onclick above)
+        //
+        // 1. Reads all 5 field values from the form
+        // 2. Shows error if any field is empty
+        // 3. Saves each value to localStorage
+        // 4. Shows success alert
+        //
+        // localStorage keys used:
+        //   stuName    → Full Name
+        //   stuClass   → Class / Year
+        //   stuSubject → Subject Interest
+        //   stuGoal    → Learning Goal
+        //   stuStyle   → Preferred Learning Style
+        // -----------------------------------------------
+        function saveProfile() {
+
+            // Read values from every form field
+            var fullName        = document.getElementById("fullName").value.trim();
+            var classYear       = document.getElementById("classYear").value;
+            var subjectInterest = document.getElementById("subjectInterest").value.trim();
+            var learningGoal    = document.getElementById("learningGoal").value.trim();
+            var learningStyle   = document.getElementById("learningStyle").value;
+
+            var errorMsg = document.getElementById("profile-error");
+
+            // Validate — every field must be filled / selected
+            if (fullName        === "" ||
+                classYear       === "" ||
+                subjectInterest === "" ||
+                learningGoal    === "" ||
+                learningStyle   === "") {
+
+                errorMsg.style.display = "block";
+                return; // stop here, do not save
+            }
+
+            // All fields are filled — hide any previous error
+            errorMsg.style.display = "none";
+
+            // Save each value to localStorage individually
+            localStorage.setItem("stuName",    fullName);
+            localStorage.setItem("stuClass",   classYear);
+            localStorage.setItem("stuSubject", subjectInterest);
+            localStorage.setItem("stuGoal",    learningGoal);
+            localStorage.setItem("stuStyle",   learningStyle);
+
+            // Confirm to the student that saving worked
+            alert("Profile saved successfully!");
+        }
+
+
+        // -----------------------------------------------
+        // loadSavedProfile()
+        // Called automatically when the page loads.
+        //
+        // If the student previously saved a profile,
+        // this pre-fills all form fields with that data
+        // so they can review or update it easily.
+        // -----------------------------------------------
+        function loadSavedProfile() {
+
+            var name    = localStorage.getItem("stuName");
+            var cls     = localStorage.getItem("stuClass");
+            var subject = localStorage.getItem("stuSubject");
+            var goal    = localStorage.getItem("stuGoal");
+            var style   = localStorage.getItem("stuStyle");
+
+            // Only fill fields if data actually exists
+            if (name)    { document.getElementById("fullName").value        = name;    }
+            if (subject) { document.getElementById("subjectInterest").value = subject; }
+            if (goal)    { document.getElementById("learningGoal").value    = goal;    }
+
+            // For dropdowns, we set value directly — the browser
+            // will automatically select the matching <option>
+            if (cls)   { document.getElementById("classYear").value     = cls;   }
+            if (style) { document.getElementById("learningStyle").value = style; }
+        }
+
+
+        // Run loadSavedProfile once the full page is ready
+        window.onload = function() {
+            loadSavedProfile();
+        };
+
+    </script>
+
 </body>
 </html>
