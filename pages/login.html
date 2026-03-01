@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuGrowth - Login</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">StuGrowth</div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="login-card">
+            <h2>Student Login</h2>
+            <p class="login-subtitle">Welcome back! Please enter your details.</p>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password">
+            </div>
+
+            <!-- Error message (hidden by default) -->
+            <p id="error-msg" class="error-msg">Please fill in all fields.</p>
+
+            <button class="btn-primary btn-full" onclick="handleLogin()">Login</button>
+            <button class="btn-back" onclick="window.location.href='../index.html'">← Back to Home</button>
+        </div>
+    </section>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
