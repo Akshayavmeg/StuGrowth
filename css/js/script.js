@@ -237,3 +237,77 @@ function loadDashboard() {
         subtext.textContent = "Track your learning and get personalized recommendations";
     }
 }
+
+
+// ------------------------------------------------
+// loadAdmin()
+// Called when pages/admin.html loads.
+//
+// Reads all 5 profile fields from localStorage
+// (saved by saveProfile in pages/profile.html).
+//
+// If data exists  → builds a table of profile rows
+//                   and injects it into #admin-card
+// If no data      → shows a "no profile found" message
+// ------------------------------------------------
+
+function loadAdmin() {
+
+    // Read all 5 saved profile values from localStorage
+    var name    = localStorage.getItem("stuName");
+    var cls     = localStorage.getItem("stuClass");
+    var subject = localStorage.getItem("stuSubject");
+    var goal    = localStorage.getItem("stuGoal");
+    var style   = localStorage.getItem("stuStyle");
+
+    // Get the card div where we will display the data
+    var card = document.getElementById("admin-card");
+
+    // Check if at least a name was saved — if not, nothing was filled
+    if (name === null || name === "") {
+
+        // Show a friendly message — no data to display
+        card.innerHTML =
+            "<p class='admin-no-data'>⚠️ No student profile found.<br>" +
+            "Ask the student to <a href='profile.html'>fill their profile</a> first.</p>";
+        return;
+    }
+
+    // Profile exists — build the card heading and data rows
+    card.innerHTML =
+        "<div class='admin-card-header'>" +
+            "<span class='admin-avatar'>👤</span>" +
+            "<div>" +
+                "<h3 class='admin-student-name'>" + name + "</h3>" +
+                "<p class='admin-student-label'>Student Profile</p>" +
+            "</div>" +
+        "</div>" +
+
+        "<div class='admin-divider'></div>" +
+
+        // Each row: label on the left, value on the right
+        "<div class='admin-row'>" +
+            "<span class='admin-label'>Full Name</span>" +
+            "<span class='admin-value'>" + name + "</span>" +
+        "</div>" +
+
+        "<div class='admin-row'>" +
+            "<span class='admin-label'>Class / Year</span>" +
+            "<span class='admin-value'>" + (cls     || "Not set") + "</span>" +
+        "</div>" +
+
+        "<div class='admin-row'>" +
+            "<span class='admin-label'>Subject Interest</span>" +
+            "<span class='admin-value'>" + (subject || "Not set") + "</span>" +
+        "</div>" +
+
+        "<div class='admin-row'>" +
+            "<span class='admin-label'>Learning Goal</span>" +
+            "<span class='admin-value'>" + (goal    || "Not set") + "</span>" +
+        "</div>" +
+
+        "<div class='admin-row'>" +
+            "<span class='admin-label'>Learning Style</span>" +
+            "<span class='admin-value'>" + (style   || "Not set") + "</span>" +
+        "</div>";
+}
