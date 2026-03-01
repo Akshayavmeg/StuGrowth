@@ -16,7 +16,9 @@ body {
     color: #1a1a2e;
 }
 
-/* --- Navbar --- */
+/* ================================
+   NAVBAR
+================================ */
 .navbar {
     background-color: #1a73e8;
     padding: 14px 0;
@@ -60,7 +62,83 @@ body {
     color: #ffffff;
 }
 
-/* --- Hero Section --- */
+/* Logout button shown in navbar on inner pages */
+.btn-logout {
+    background-color: #ffffff;
+    color: #1a73e8;
+    border: none;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #d6eaff;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+.btn-primary {
+    background-color: #ffffff;
+    color: #1a73e8;
+    border: none;
+    padding: 14px 36px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background-color: #e3f0ff;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Full-width button used inside forms */
+.btn-full {
+    width: 100%;
+    margin-top: 8px;
+    padding: 13px;
+    font-size: 16px;
+}
+
+/* Smaller button used inside dashboard cards */
+.btn-card {
+    padding: 10px 24px;
+    font-size: 14px;
+}
+
+/* Outlined back/secondary button */
+.btn-back {
+    width: 100%;
+    margin-top: 12px;
+    padding: 11px;
+    font-size: 15px;
+    background-color: transparent;
+    color: #1a73e8;
+    border: 1.5px solid #1a73e8;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-back:hover {
+    background-color: #e3f0ff;
+}
+
+/* ================================
+   HERO SECTION  (index.html)
+================================ */
 .hero {
     min-height: calc(100vh - 56px);
     background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
@@ -90,29 +168,10 @@ body {
     margin-bottom: 36px;
 }
 
-/* --- Button --- */
-.btn-primary {
-    background-color: #ffffff;
-    color: #1a73e8;
-    border: none;
-    padding: 14px 36px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-.btn-primary:hover {
-    background-color: #e3f0ff;
-    transform: translateY(-2px);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-/* --- Login Section --- */
+/* ================================
+   LOGIN & PROFILE FORM SECTION
+   (login.html and profile.html)
+================================ */
 .login-section {
     min-height: calc(100vh - 56px);
     background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
@@ -131,6 +190,11 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+/* Profile card is a bit wider to fit more fields comfortably */
+.profile-card {
+    max-width: 500px;
+}
+
 .login-card h2 {
     font-size: 26px;
     font-weight: 700;
@@ -146,6 +210,7 @@ body {
     margin-bottom: 28px;
 }
 
+/* --- Form Fields --- */
 .form-group {
     margin-bottom: 18px;
 }
@@ -173,31 +238,26 @@ body {
     border-color: #1a73e8;
 }
 
-.btn-full {
+/* Dropdown styled to match text inputs */
+.form-select {
     width: 100%;
-    margin-top: 8px;
-    padding: 13px;
-    font-size: 16px;
-}
-
-.btn-back {
-    width: 100%;
-    margin-top: 12px;
-    padding: 11px;
-    font-size: 15px;
-    background-color: transparent;
-    color: #1a73e8;
-    border: 1.5px solid #1a73e8;
+    padding: 11px 14px;
+    border: 1.5px solid #c5d8f8;
     border-radius: 6px;
+    font-size: 15px;
+    color: #1a1a2e;
+    background-color: #ffffff;
+    outline: none;
     cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.2s, color 0.2s;
+    transition: border-color 0.2s;
+    appearance: auto;
 }
 
-.btn-back:hover {
-    background-color: #e3f0ff;
+.form-select:focus {
+    border-color: #1a73e8;
 }
 
+/* Inline error message — hidden by default, shown by JS */
 .error-msg {
     color: #d32f2f;
     font-size: 13px;
@@ -205,48 +265,9 @@ body {
     display: none;
 }
 
-/* --- Responsive Design --- */
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-
-    .hero-content h1 {
-        font-size: 28px;
-    }
-
-    .hero-content p {
-        font-size: 15px;
-    }
-
-    .btn-primary {
-        padding: 12px 28px;
-        font-size: 15px;
-    }
-}
 /* ================================
-   NEW CSS — Append this to the bottom
-   of your existing css/style.css
+   DASHBOARD  (dashboard.html)
 ================================ */
-
-/* --- Logout Button (Navbar) --- */
-.btn-logout {
-    background-color: #ffffff;
-    color: #1a73e8;
-    border: none;
-    padding: 8px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-logout:hover {
-    background-color: #d6eaff;
-}
-
-/* --- Dashboard Welcome Section --- */
 .dashboard-welcome {
     background-color: #1a73e8;
     color: #ffffff;
@@ -265,7 +286,7 @@ body {
     color: #c8dff8;
 }
 
-/* --- Dashboard Cards Section --- */
+/* Cards container — flexbox row that wraps on small screens */
 .dashboard-cards {
     display: flex;
     flex-wrap: wrap;
@@ -276,7 +297,7 @@ body {
     min-height: calc(100vh - 56px - 148px);
 }
 
-/* --- Individual Card --- */
+/* Individual dashboard card */
 .card {
     background-color: #ffffff;
     border-radius: 10px;
@@ -311,18 +332,36 @@ body {
     margin-bottom: 24px;
 }
 
-/* Card button — slightly smaller than hero button */
-.btn-card {
-    padding: 10px 24px;
-    font-size: 14px;
-}
-
-/* --- Responsive: Stack cards on small screens --- */
+/* ================================
+   RESPONSIVE  (mobile screens)
+================================ */
 @media (max-width: 768px) {
+
+    /* Hide nav links on small screens */
+    .nav-links {
+        display: none;
+    }
+
+    /* Shrink hero heading */
+    .hero-content h1 {
+        font-size: 28px;
+    }
+
+    .hero-content p {
+        font-size: 15px;
+    }
+
+    .btn-primary {
+        padding: 12px 28px;
+        font-size: 15px;
+    }
+
+    /* Dashboard welcome heading */
     .dashboard-welcome h1 {
         font-size: 24px;
     }
 
+    /* Stack cards full width */
     .card {
         width: 100%;
         max-width: 360px;

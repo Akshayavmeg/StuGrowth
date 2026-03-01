@@ -45,6 +45,31 @@
         </div>
     </section>
 
-    <script src="../js/script.js"></script>
+    <!--
+        Login logic is written directly here so it always works,
+        no matter where script.js is located on your computer.
+    -->
+    <script>
+        function handleLogin() {
+
+            var email    = document.getElementById("email").value.trim();
+            var password = document.getElementById("password").value.trim();
+            var errorMsg = document.getElementById("error-msg");
+
+            // If either field is empty, show error and stop
+            if (email === "" || password === "") {
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            // Hide error message (in case it was shown before)
+            errorMsg.style.display = "none";
+
+            // login.html and dashboard.html are in the SAME pages/ folder
+            // so we just use the filename directly
+            window.location.href = "dashboard.html";
+        }
+    </script>
+
 </body>
 </html>

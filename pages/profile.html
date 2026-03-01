@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StuGrowth - My Profile</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">StuGrowth</div>
+            <button class="btn-logout" onclick="window.location.href='../index.html'">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Profile Form Section -->
+    <section class="login-section">
+        <div class="login-card profile-card">
+
+            <h2>My Profile</h2>
+            <p class="login-subtitle">Fill in your details to get personalized recommendations</p>
+
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+            </div>
+
+            <!-- Class / Year -->
+            <div class="form-group">
+                <label for="classYear">Class / Year</label>
+                <select id="classYear" class="form-select">
+                    <option value="">-- Select your class --</option>
+                    <option value="9">Class 9</option>
+                    <option value="10">Class 10</option>
+                    <option value="11">Class 11</option>
+                    <option value="12">Class 12</option>
+                    <option value="btech1">BTech 1st Year</option>
+                    <option value="btech2">BTech 2nd Year</option>
+                    <option value="btech3">BTech 3rd Year</option>
+                    <option value="btech4">BTech 4th Year</option>
+                </select>
+            </div>
+
+            <!-- Subject Interest -->
+            <div class="form-group">
+                <label for="subjectInterest">Subject Interest</label>
+                <input type="text" id="subjectInterest" placeholder="e.g. Mathematics, Programming, Physics">
+            </div>
+
+            <!-- Learning Goal -->
+            <div class="form-group">
+                <label for="learningGoal">Learning Goal</label>
+                <input type="text" id="learningGoal" placeholder="e.g. Crack JEE, Learn Web Development">
+            </div>
+
+            <!-- Preferred Learning Style -->
+            <div class="form-group">
+                <label for="learningStyle">Preferred Learning Style</label>
+                <select id="learningStyle" class="form-select">
+                    <option value="">-- Select learning style --</option>
+                    <option value="Videos">Videos</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Practice">Practice</option>
+                    <option value="Mixed">Mixed</option>
+                </select>
+            </div>
+
+            <!-- Error message (hidden by default) -->
+            <p id="profile-error" class="error-msg">Please fill in all fields before saving.</p>
+
+            <!-- Buttons -->
+            <button class="btn-primary btn-full" onclick="saveProfile()">Save Profile</button>
+            <button class="btn-back" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+
+        </div>
+    </section>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
